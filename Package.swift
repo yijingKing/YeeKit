@@ -2,17 +2,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "YijingUI",
+    name: "YeeKit",
     platforms: [
         .iOS(.v14)
     ],
     products: [
-        .library(name: "YijingUI", targets: ["YijingUI"]),
+        .library(name: "YeeKit", targets: ["YeeKit"]),
     ],
     targets: [
         .target(
-            name: "YijingUI",
-            path: "Sources/YijingUI"
+            name: "YeeKit",
+            path: "Sources/"
         )
     ]
 )
