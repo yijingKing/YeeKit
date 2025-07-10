@@ -33,7 +33,7 @@ public extension Dictionary where Key == String, Value == Any {
         }
     }
 }
-extension Dictionary {
+public extension Dictionary {
     func compactMapKeys<T: Hashable>(_ transform: (Key) throws -> T?) rethrows -> [T: Value] {
         var result = [T: Value]()
         for (key, value) in self {
