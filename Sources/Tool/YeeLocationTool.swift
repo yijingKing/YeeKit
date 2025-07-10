@@ -9,7 +9,7 @@ GitHub:        https://github.com/yijingKing
 import Foundation
 import CoreLocation
 
-class LocationTool: NSObject {
+public class LocationTool: NSObject {
     static let shared = LocationTool()
     
     private let locationManager = CLLocationManager()
@@ -35,7 +35,7 @@ class LocationTool: NSObject {
     }
 }
 
-extension LocationTool {
+public extension LocationTool {
     /// 计算当前位置与指定经纬度之间的距离，返回格式化字符串（单位：m 或 km）
     func formattedDistanceFromCurrentLocation(to coordinate: CLLocationCoordinate2D, completion: @escaping (String?) -> Void) {
         getCurrentLocation { current, error in
@@ -56,7 +56,7 @@ extension LocationTool {
     }
 }
 
-extension LocationTool: CLLocationManagerDelegate {
+public extension LocationTool: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             print("经纬度：\(location.coordinate.latitude), \(location.coordinate.longitude)")

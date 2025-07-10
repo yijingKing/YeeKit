@@ -8,6 +8,7 @@ GitHub:        https://github.com/yijingKing
 
 
 import Foundation
+import UIKit
 
 extension UIEdgeInsets: YeeThen {}
 extension UIOffset: YeeThen {}

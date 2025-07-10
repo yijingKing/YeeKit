@@ -7,6 +7,7 @@ GitHub:        https://github.com/yijingKing
 ********************************************************************************/
 
 import Foundation
+import UIKit
 
 public struct YEXAuto {
     
@@ -17,7 +18,7 @@ public struct YEXAuto {
     // }
     /// 设置转换闭包
     /// - Parameter conversion: 转换闭包
-    public static func set(conversion: @escaping ((Double) -> Double)) {
+    static func set(conversion: @escaping ((Double) -> Double)) {
         conversionClosure = conversion
     }
     
@@ -39,7 +40,7 @@ public struct YEXAuto {
 
 extension YEXAuto {
     
-    static func conversion(_ value: Double) -> Double {
+    public static func conversion(_ value: Double) -> Double {
         return conversionClosure(value)
     }
 }

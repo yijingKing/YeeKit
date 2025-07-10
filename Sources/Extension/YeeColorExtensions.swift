@@ -9,7 +9,7 @@ GitHub:        https://github.com/yijingKing
 import Foundation
 import SwiftUI
 
-extension Color {
+public extension Color {
     static let themeColor = Color(hex: "#0680EF")
     static let themeBackground = Color(hex: "#F5F5F5")
     static let themeTitle = Color(hex: "#212121")
@@ -23,7 +23,7 @@ extension Color {
 extension Color {
     /// 使用十六进制字符串初始化颜色
     /// - Parameter hex: 十六进制字符串，支持带#或不带#，6位或8位格式
-    init(hex: String) {
+    public init(hex: String) {
         var cleanedHex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         if cleanedHex.hasPrefix("#") {
             // 移除前缀 #
