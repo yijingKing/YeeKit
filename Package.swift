@@ -12,7 +12,7 @@ let package = Package(
     targets: [
         .target(
             name: "YeeKit",
-            path: "Sources/"
+            path: "Sources/YeeKit"
         )
     ]
 )

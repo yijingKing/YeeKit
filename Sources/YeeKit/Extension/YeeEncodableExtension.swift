@@ -11,7 +11,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-extension Encodable {
+public extension Encodable {
     func toDictionary() -> [String: Any]? {
         do {
             let encoder = JSONEncoder()
