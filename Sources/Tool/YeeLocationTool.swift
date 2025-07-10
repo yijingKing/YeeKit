@@ -56,8 +56,8 @@ public extension LocationTool {
     }
 }
 
-public extension LocationTool: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+extension LocationTool: CLLocationManagerDelegate {
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             print("经纬度：\(location.coordinate.latitude), \(location.coordinate.longitude)")
             completion?(location.coordinate, nil)
@@ -66,12 +66,12 @@ public extension LocationTool: CLLocationManagerDelegate {
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         completion?(nil, error)
         completion = nil
     }
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let status = manager.authorizationStatus
         if status == .authorizedWhenInUse || status == .authorizedAlways {
             manager.startUpdatingLocation()
