@@ -19,7 +19,7 @@ git push origin $VERSION
 
 # 步骤2：校验 podspec
 echo "🔍 校验 podspec..."
-pod lib lint ${REPO_NAME}.podspec --allow-warnings --verbose
+pod lib lint  --allow-warnings --verbose
 
 if [ $? -ne 0 ]; then
   echo "❌ podspec 校验失败"
@@ -28,7 +28,7 @@ fi
 
 # 步骤3：发布到 trunk
 echo "📦 发布到 CocoaPods..."
-pod trunk push ${REPO_NAME}.podspec --allow-warnings --verbose
+pod trunk push  --allow-warnings --verbose
 
 if [ $? -eq 0 ]; then
   echo "✅ 发布成功：${REPO_NAME} ${VERSION}"
