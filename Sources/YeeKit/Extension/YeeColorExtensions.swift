@@ -10,14 +10,14 @@ import Foundation
 import SwiftUI
 
 public extension Color {
-    static let themeColor = Color("#0680EF")
-    static let themeBackground = Color("#F5F5F5")
-    static let themeTitle = Color("#212121")
-    static let themeSubtitle = Color("#898888")
-    static let themeSeparator = Color("#F1F0F0")
-    static let themeBorder = Color("#989797")
-    static let themePrimary = Color("#0680EF")
-    static let hex212121 = Color("#212121")
+    static let themeColor = Color(hex:"#0680EF")
+    static let themeBackground = Color(hex:"#F5F5F5")
+    static let themeTitle = Color(hex:"#212121")
+    static let themeSubtitle = Color(hex:"#898888")
+    static let themeSeparator = Color(hex:"#F1F0F0")
+    static let themeBorder = Color(hex:"#989797")
+    static let themePrimary = Color(hex:"#0680EF")
+    static let hex212121 = Color(hex:"#212121")
 }
 
 public extension Color {
