@@ -20,10 +20,10 @@ public extension Color {
     static let hex212121 = Color(hex: "#212121")
 }
 
-extension Color {
+public extension Color {
     /// 使用十六进制字符串初始化颜色
     /// - Parameter hex: 十六进制字符串，支持带#或不带#，6位或8位格式
-    public init(hex: String) {
+    init(hex: String) {
         var cleanedHex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         if cleanedHex.hasPrefix("#") {
             // 移除前缀 #
