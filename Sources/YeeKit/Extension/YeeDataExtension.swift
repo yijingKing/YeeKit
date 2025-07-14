@@ -97,4 +97,19 @@ public extension Data {
             return nil
         }
     }
+    /// 压缩
+    func compressed(toMaxKB maxKB: Int) -> Data? {
+        let maxBytes = maxKB * 1024
+        var compression: CGFloat = 1.0
+        var compressedData = self
+        while compressedData.count > maxBytes && compression > 0.01 {
+            compression -= 0.1
+            if let newData = UIImage(data: self)?.jpegData(compressionQuality: compression) {
+                compressedData = newData
+            } else {
+                return nil
+            }
+        }
+        return compressedData.count <= maxBytes ? compressedData : nil
+    }
 }

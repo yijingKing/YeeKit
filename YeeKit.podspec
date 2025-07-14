@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
   s.name             = 'YeeKit'
-  s.version          = '1.0.8'
+  s.version          = '1.0.9'
   s.summary          = 'A lightweight SwiftUI extension kit for data/state/view handling.'
   s.description      = <<-DESC
-    YijingUI is a modular and elegant SwiftUI utility library focused on data handling
+      YeeKit is a modular and elegant SwiftUI utility library focused on data handling
   DESC
 
   s.homepage         = 'https://github.com/yijingKing/YeeKit'
@@ -14,9 +14,12 @@ Pod::Spec.new do |s|
 
   s.swift_version    = '5.0'
   s.ios.deployment_target = '14.0'
+  
+  
 
   s.source_files     = 'Sources/**/*.{swift}'
   s.module_name      = 'YeeKit'
   s.requires_arc     = true
+  s.dependency 'Kingfisher', '~> 8.4'
   
 end

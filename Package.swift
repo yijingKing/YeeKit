@@ -1,4 +1,5 @@
-// swift-tools-version:5.7
+
+// swift-tools-version: 6.1
 import PackageDescription
 
 let package = Package(
@@ -9,9 +10,15 @@ let package = Package(
     products: [
         .library(name: "YeeKit", targets: ["YeeKit"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "8.4.0")
+    ],
     targets: [
         .target(
             name: "YeeKit",
+            dependencies: [
+                .product(name: "Kingfisher", package: "Kingfisher")
+            ],
             path: "Sources/YeeKit"
         )
     ]

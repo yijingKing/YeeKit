@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 
 public class LocationTool: NSObject {
-    public static let shared = LocationTool()
+    @MainActor public static let shared = LocationTool()
     
     private let locationManager = CLLocationManager()
     private var completion: ((CLLocationCoordinate2D?, Error?) -> Void)?
