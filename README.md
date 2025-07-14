@@ -48,7 +48,8 @@ YeeKit 是一个功能丰富的 Swift 工具库，提供了系统操作、数据
 
 ## 使用示例
 
-### 系统操作// 拨打电话
+### 系统操作
+// 拨打电话
 YEXSystem.openPhone("1234567890") { success in
     if success {
         print("电话拨打成功")
@@ -77,6 +78,7 @@ system.isOpenAlbumService { isOpen in
         system.openPermissionsSetting()
     }
 }
+
 ### 数据处理// Data 转字典
 let data = "{\"key\": \"value\"}".data(using: .utf8)!
 let dictionary = data.toDictionary()
@@ -86,7 +88,9 @@ print(dictionary)
 let dict: [String: Any] = ["key": "value"]
 let jsonString = dict.toJSONString()
 print(jsonString)
-### 日期转换// 时间戳转日期
+
+### 日期转换
+// 时间戳转日期
 let timestamp = "1635235200"
 let date = Date.timestampToFormatterDate(timestamp: timestamp)
 print(date)
@@ -96,7 +100,9 @@ let timeString = "2020-10-26 16:52:41"
 let formatter = "yyyy-MM-dd HH:mm:ss"
 let timestampString = Date.formatterTimeStringToTimestamp(timesString: timeString, formatter: formatter)
 print(timestampString)
-### 视图扩展struct ContentView: View {
+
+### 视图扩展
+struct ContentView: View {
     @State private var text = ""
 
     var body: some View {
@@ -112,6 +118,7 @@ print(timestampString)
         }
     }
 }
+
 ### 运算符重载// NSAttributedString 相加
 let attributedString1 = NSAttributedString(string: "Hello ")
 let attributedString2 = NSAttributedString(string: "World!")
@@ -123,6 +130,7 @@ let point1 = CGPoint(x: 10, y: 20)
 let point2 = CGPoint(x: 30, y: 40)
 let newPoint = point1 + point2
 print(newPoint)
+
 ### 其他工具// 版本判断
 let nowVersion = "1.0.0"
 let newVersion = "1.0.1"
@@ -132,28 +140,7 @@ print(isNewVersion)
 // 随机数生成
 let randomNumber = Int.random(within: 0..<10)
 print(randomNumber)
-## 效果展示
 
-### 系统操作
-当调用 `YEXSystem.openPhone` 方法时，应用会请求系统拨打电话：
-![电话拨号界面](https://picsum.photos/400/600?random=1)
-
-调用 `YEXSystem.openSettings` 会打开应用的设置页面：
-![应用设置界面](https://picsum.photos/400/600?random=2)
-
-相册权限检测会根据用户授权状态显示不同的提示：
-![相册权限请求界面](https://picsum.photos/400/600?random=3)
-
-### 视图扩展
-使用 `styled` 修饰符可以轻松设置视图样式：
-![样式设置示例](https://picsum.photos/400/600?random=4)
-
-`onTapToDismissKeyboard` 让界面交互更加友好：
-![键盘消失效果](https://picsum.photos/400/600?random=5)
-
-### 日期转换
-时间戳与日期的转换示例：
-![日期转换效果](https://picsum.photos/400/600?random=6)
 
 ## 文档
 每个功能的详细文档可以在代码注释中找到，你可以在代码文件中查看具体的实现和使用说明。

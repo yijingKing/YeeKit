@@ -12,7 +12,7 @@ import UIKit
 import Photos
 
 /// 系统方法
-open class YEXSystem: NSObject {
+open class YeeSystem: NSObject {
     ///是否编辑,默认false
     public var allowsEditing: Bool?
     
@@ -137,7 +137,7 @@ open class YEXSystem: NSObject {
 }
 
 //MARK: ------- 打开相机相册
-extension YEXSystem: UIImagePickerControllerDelegate , UINavigationControllerDelegate {
+extension YeeSystem: UIImagePickerControllerDelegate , UINavigationControllerDelegate {
     
     //MARK: -------UIImagePickerControllerDelegate
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
