@@ -41,7 +41,7 @@ YeeKit 是一个功能丰富的 Swift 工具库，提供了系统操作、数据
 ## 安装
 
 ### CocoaPods
-在 `Podfile` 中添加以下内容：pod 'YeeKit'然后运行 `pod install`。
+在 `Podfile` 中添加以下内容：`pod 'YeeKit'` 然后运行 `pod install`。
 
 ### Swift Package Manager
 在 Xcode 中，选择 `File` -> `Swift Packages` -> `Add Package Dependency`，输入 YeeKit 的仓库地址，然后按照提示完成安装。
