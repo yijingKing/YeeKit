@@ -83,7 +83,19 @@ public enum YEXTimestampType: Int {
 }
 
 public enum DateFormattersManager {
-    public static var dateFormatters = SynchronizedDictionary<String, DateFormatter>()
+    public static let actor = DateFormattersActor()
+}
+
+public actor DateFormattersActor {
+    private var storage = [String: DateFormatter]()
+
+    public func getValue(for key: String) -> DateFormatter? {
+        return storage[key]
+    }
+
+    public func setValue(for key: String, value: DateFormatter) {
+        storage[key] = value
+    }
 }
 
 public extension Date {
@@ -259,13 +271,11 @@ public extension Date {
     // MARK: - -- 将日期转换为字符串
 
     /// 将日期转换为字符串
-    func toString(format dateFormat: YEXDateFormatter = .dateModeYMDHMS, _ timeZone: TimeZone = NSTimeZone.system) -> String {
-        let formatter = DateFormatter()
+    func toString(format dateFormat: YEXDateFormatter = .dateModeYMDHMS, _ timeZone: TimeZone = NSTimeZone.system) async -> String {
+        let formatter = await getDateFormatter(for: dateFormat)
         formatter.locale = Locale(identifier: "zh_CN")
-        formatter.dateFormat = dateFormat.rawValue
         formatter.timeZone = timeZone
-        let date = formatter.string(from: self)
-        return date
+        return formatter.string(from: self)
     }
 
     // MARK: - -- 将日期转换为字符串
@@ -434,31 +444,36 @@ public extension Date {
 
     //  今天
     var isToday: Bool {
-        let dateFormatter = self.getDateFormatter(for: .dateModeYMD)
-        return dateFormatter.string(from: self) == dateFormatter.string(from: Date())
+        get async {
+            let dateFormatter = await self.getDateFormatter(for: .dateModeYMD)
+            return dateFormatter.string(from: self) == dateFormatter.string(from: Date())
+        }
     }
 
     // MARK: - -- 昨天
 
     ///  昨天
     var isYesterday: Bool {
-        let yesterDay = Calendar.current.date(byAdding: .day, value: -1, to: Date())
-        let dateFormatter = self.getDateFormatter(for: .dateModeYMD)
-        return dateFormatter.string(from: self) == dateFormatter.string(from: yesterDay!)
+        get async {
+            let yesterDay = Calendar.current.date(byAdding: .day, value: -1, to: Date())
+            let dateFormatter = await self.getDateFormatter(for: .dateModeYMD)
+            return dateFormatter.string(from: self) == dateFormatter.string(from: yesterDay!)
+        }
     }
 
     // MARK: - -- 明天
 
     ///  明天
     var isTomorrow: Bool {
-        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())
-        let dateFormatter = self.getDateFormatter(for: .dateModeYMD)
+        get async {
+            let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+            let dateFormatter = await self.getDateFormatter(for: .dateModeYMD)
 
-        return dateFormatter.string(from: self) == dateFormatter.string(from: tomorrow!)
+            return dateFormatter.string(from: self) == dateFormatter.string(from: tomorrow!)
+        }
     }
 
     // MARK: - -- 在本月内
-
     ///  在本月内
     var isThisMonth: Bool {
         let today = Date()
@@ -497,16 +512,20 @@ public extension Date {
 
     ///  工作日
     var weekdayString: String {
-        let dateFormatter = self.getDateFormatter(for: .dateModeE)
-        return dateFormatter.string(from: self)
+        get async {
+            let dateFormatter = await self.getDateFormatter(for: .dateModeE)
+            return dateFormatter.string(from: self)
+        }
     }
 
     // MARK: - -- 月
 
     ///  月
     var monthString: String {
-        let dateFormatter = self.getDateFormatter(for: .dateModeM)
-        return dateFormatter.string(from: self)
+        get async {
+            let dateFormatter = await self.getDateFormatter(for: .dateModeM)
+            return dateFormatter.string(from: self)
+        }
     }
 
     // MARK: - -- 天
@@ -554,9 +573,15 @@ public extension Date {
     init?(fromString string: String,
           format: String,
           timezone: TimeZone = TimeZone.autoupdatingCurrent,
-          locale: Locale = Locale.current)
+          locale: Locale = Locale.current) async
     {
-        if let dateFormatter = DateFormattersManager.dateFormatters.getValue(for: format) {
+        // Make this initializer async to allow actor access
+        var dateFormatter: DateFormatter?
+        if let cached = try? await DateFormattersManager.actor.getValue(for: format) {
+            dateFormatter = cached
+        }
+        
+        if let dateFormatter = dateFormatter {
             if let date = dateFormatter.date(from: string) {
                 self = date
             } else {
@@ -567,7 +592,7 @@ public extension Date {
             formatter.timeZone = timezone
             formatter.locale = locale
             formatter.dateFormat = format
-            DateFormattersManager.dateFormatters.setValue(for: format, value: formatter)
+            await DateFormattersManager.actor.setValue(for: format, value: formatter)
             if let date = formatter.date(from: string) {
                 self = date
             } else {
@@ -577,32 +602,32 @@ public extension Date {
     }
 
     ///  Initializes Date from string returned from an http response, according to several RFCs / ISO
-    init?(httpDateString: String) {
-        if let rfc1123 = Date(fromString: httpDateString, format: "EEE',' dd' 'MMM' 'yyyy HH':'mm':'ss zzz") {
+    init?(httpDateString: String) async {
+        if let rfc1123 = await Date(fromString: httpDateString, format: "EEE',' dd' 'MMM' 'yyyy HH':'mm':'ss zzz") {
             self = rfc1123
             return
         }
-        if let rfc850 = Date(fromString: httpDateString, format: "EEEE',' dd'-'MMM'-'yy HH':'mm':'ss z") {
+        if let rfc850 = await Date(fromString: httpDateString, format: "EEEE',' dd'-'MMM'-'yy HH':'mm':'ss z") {
             self = rfc850
             return
         }
-        if let asctime = Date(fromString: httpDateString, format: "EEE MMM d HH':'mm':'ss yyyy") {
+        if let asctime = await Date(fromString: httpDateString, format: "EEE MMM d HH':'mm':'ss yyyy") {
             self = asctime
             return
         }
-        if let iso8601DateOnly = Date(fromString: httpDateString, format: "yyyy-MM-dd") {
+        if let iso8601DateOnly = await Date(fromString: httpDateString, format: "yyyy-MM-dd") {
             self = iso8601DateOnly
             return
         }
-        if let iso8601DateHrMinOnly = Date(fromString: httpDateString, format: "yyyy-MM-dd'T'HH:mmxxxxx") {
+        if let iso8601DateHrMinOnly = await Date(fromString: httpDateString, format: "yyyy-MM-dd'T'HH:mmxxxxx") {
             self = iso8601DateHrMinOnly
             return
         }
-        if let iso8601DateHrMinSecOnly = Date(fromString: httpDateString, format: "yyyy-MM-dd'T'HH:mm:ssxxxxx") {
+        if let iso8601DateHrMinSecOnly = await Date(fromString: httpDateString, format: "yyyy-MM-dd'T'HH:mm:ssxxxxx") {
             self = iso8601DateHrMinSecOnly
             return
         }
-        if let iso8601DateHrMinSecMs = Date(fromString: httpDateString, format: "yyyy-MM-dd'T'HH:mm:ss.SSSxxxxx") {
+        if let iso8601DateHrMinSecMs = await Date(fromString: httpDateString, format: "yyyy-MM-dd'T'HH:mm:ss.SSSxxxxx") {
             self = iso8601DateHrMinSecMs
             return
         }
@@ -617,24 +642,23 @@ public extension Date {
     // MARK: - -- 格式化
 
     ///  格式化
-    fileprivate func getDateFormatter(for format: YEXDateFormatter) -> DateFormatter {
+    fileprivate func getDateFormatter(for format: YEXDateFormatter) async -> DateFormatter {
         var dateFormatter: DateFormatter?
-        if let _dateFormatter = DateFormattersManager.dateFormatters.getValue(for: format.rawValue) {
+        if let _dateFormatter = await DateFormattersManager.actor.getValue(for: format.rawValue) {
             dateFormatter = _dateFormatter
         } else {
-            dateFormatter = createDateFormatter(for: format.rawValue)
+            dateFormatter = await createDateFormatter(for: format.rawValue)
         }
-
         return dateFormatter!
     }
 
     // MARK: - -- 格式化
 
     /// 格式化
-    fileprivate func createDateFormatter(for format: String) -> DateFormatter {
+    fileprivate func createDateFormatter(for format: String) async -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = format
-        DateFormattersManager.dateFormatters.setValue(for: format, value: formatter)
+        await DateFormattersManager.actor.setValue(for: format, value: formatter)
         return formatter
     }
 }

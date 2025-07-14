@@ -9,6 +9,18 @@ GitHub:        https://github.com/yijingKing
 import Foundation
 import UIKit
 
+actor YEXAutoStorage {
+    private var conversionClosure: (Double) async -> Double = { $0 }
+
+    func set(_ closure: @escaping @Sendable (Double) async -> Double) {
+        conversionClosure = closure
+    }
+
+    func convert(_ value: Double) async -> Double {
+        return await conversionClosure(value)
+    }
+}
+
 public struct YEXAuto {
     
     // 在AppDelegate
@@ -18,30 +30,42 @@ public struct YEXAuto {
     // }
     /// 设置转换闭包
     /// - Parameter conversion: 转换闭包
-    static func set(conversion: @escaping ((Double) -> Double)) {
-        conversionClosure = conversion
+    static let storage = YEXAutoStorage()
+    
+    static func set(conversion: @escaping @Sendable (Double) async -> Double) {
+        Task {
+            await storage.set(conversion)
+        }
     }
     
-    /// 转换 用于数值的等比例计算 如需自定义可重新设置
-    static var conversionClosure: ((Double) -> Double) = { (origin) in
-        guard UIDevice.current.userInterfaceIdiom == .phone else {
-            return origin
+    static func setDefaultConversion() {
+        Task { @MainActor in
+            let base = 375.0
+            let screenWidth = Double(UIScreen.main.bounds.width)
+            let screenHeight = Double(UIScreen.main.bounds.height)
+            let width = min(screenWidth, screenHeight)
+            let scale = Double(UIScreen.main.scale)
+            
+            let closure: @Sendable (Double) async -> Double = { origin in
+                let result = origin * (width / base)
+                return (result * scale).rounded(.up) / scale
+            }
+            await storage.set(closure)
         }
-        
-        let base = 375.0
-        let screenWidth = Double(UIScreen.main.bounds.width)
-        let screenHeight = Double(UIScreen.main.bounds.height)
-        let width = min(screenWidth, screenHeight)
-        let result = origin * (width / base)
-        let scale = Double(UIScreen.main.scale)
-        return (result * scale).rounded(.up) / scale
     }
 }
 
 extension YEXAuto {
     
     public static func conversion(_ value: Double) -> Double {
-        return conversionClosure(value)
+        var result = value
+        let semaphore = DispatchSemaphore(value: 0)
+        Task {
+            result = await storage.convert(value)
+            semaphore.signal()
+        }
+        semaphore.wait()
+        return result
     }
 }
 
