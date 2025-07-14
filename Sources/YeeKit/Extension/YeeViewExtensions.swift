@@ -71,3 +71,17 @@ public extension View {
         }
     }
 }
+
+
+public extension View {
+    func scaledTo(_ contentMode: SwiftUI.ContentMode) -> some View {
+        switch contentMode {
+        case .fill:
+            return AnyView(self.scaledToFill())
+        case .fit:
+            return AnyView(self.scaledToFit())
+        @unknown default:
+            return AnyView(self.scaledToFill())
+        }
+    }
+}

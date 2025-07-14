@@ -17,6 +17,7 @@ public struct YeeImageView: View {
     private let size: CGSize?
     private let cornerRadius: CGFloat
     private let compressMaxKB: Int?
+    private let contentMode: SwiftUI.ContentMode
     
     @State private var image: Image? = nil
 
@@ -28,13 +29,15 @@ public struct YeeImageView: View {
     ///   - size: 固定尺寸，可选
     ///   - cornerRadius: 圆角设置，默认 0
     ///   - compressMaxKB: 压缩目标大小（单位 KB），默认 nil
+    ///   - contentMode: 图片内容模式，默认 .fill
     public init(
         url: URL?,
-        placeholder: Image = Image(systemName: "photo"),
+        placeholder: Image = Image(systemName: "photo.circle"),
         failureImage: UIImage? = UIImage(systemName: "xmark.octagon"),
         size: CGSize? = nil,
         cornerRadius: CGFloat = 0,
-        compressMaxKB: Int? = nil
+        compressMaxKB: Int? = nil,
+        contentMode: SwiftUI.ContentMode = .fill
     ) {
         self.url = url
         self.placeholder = placeholder
@@ -42,6 +45,7 @@ public struct YeeImageView: View {
         self.size = size
         self.cornerRadius = cornerRadius
         self.compressMaxKB = compressMaxKB
+        self.contentMode = contentMode
     }
 
     /// 链式设置压缩目标大小（单位 KB）
@@ -52,7 +56,8 @@ public struct YeeImageView: View {
             failureImage: self.failureImage,
             size: self.size,
             cornerRadius: self.cornerRadius,
-            compressMaxKB: maxKB
+            compressMaxKB: maxKB,
+            contentMode: self.contentMode
         )
     }
 
@@ -64,7 +69,8 @@ public struct YeeImageView: View {
             failureImage: self.failureImage,
             size: self.size,
             cornerRadius: self.cornerRadius,
-            compressMaxKB: self.compressMaxKB
+            compressMaxKB: self.compressMaxKB,
+            contentMode: self.contentMode
         )
     }
 
@@ -76,7 +82,8 @@ public struct YeeImageView: View {
             failureImage: self.failureImage,
             size: self.size,
             cornerRadius: self.cornerRadius,
-            compressMaxKB: self.compressMaxKB
+            compressMaxKB: self.compressMaxKB,
+            contentMode: self.contentMode
         )
     }
 
@@ -88,7 +95,8 @@ public struct YeeImageView: View {
             failureImage: failureImage,
             size: self.size,
             cornerRadius: self.cornerRadius,
-            compressMaxKB: self.compressMaxKB
+            compressMaxKB: self.compressMaxKB,
+            contentMode: self.contentMode
         )
     }
 
@@ -100,7 +108,8 @@ public struct YeeImageView: View {
             failureImage: self.failureImage,
             size: size,
             cornerRadius: self.cornerRadius,
-            compressMaxKB: self.compressMaxKB
+            compressMaxKB: self.compressMaxKB,
+            contentMode: self.contentMode
         )
     }
 
@@ -112,7 +121,21 @@ public struct YeeImageView: View {
             failureImage: self.failureImage,
             size: self.size,
             cornerRadius: cornerRadius,
-            compressMaxKB: self.compressMaxKB
+            compressMaxKB: self.compressMaxKB,
+            contentMode: self.contentMode
+        )
+    }
+    
+    /// 链式设置图片内容模式
+    public func contentMode(_ contentMode: SwiftUI.ContentMode) -> YeeImageView {
+        YeeImageView(
+            url: self.url,
+            placeholder: self.placeholder,
+            failureImage: self.failureImage,
+            size: self.size,
+            cornerRadius: self.cornerRadius,
+            compressMaxKB: self.compressMaxKB,
+            contentMode: contentMode
         )
     }
 
@@ -123,7 +146,7 @@ public struct YeeImageView: View {
                 .placeholder {
                     placeholder
                         .resizable()
-                        .scaledToFit()
+                        .scaledTo(contentMode)
                 }
                 .onFailureImage(failureImage ?? UIImage())
                 .resizable()
@@ -136,29 +159,29 @@ public struct YeeImageView: View {
                         self.image = Image(uiImage: result.image)
                     }
                 }
-                .scaledToFill()
+                .scaledTo(contentMode)
                 .frame(width: size?.width, height: size?.height)
                 .clipped()
                 .cornerRadius(cornerRadius)
                 .background(
                     VStack {
                         if let image = image {
-                                    image
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: size?.width, height: size?.height)
-                                        .clipped()
-                                }
+                            image
+                                .resizable()
+                                .scaledTo(contentMode)
+                                .frame(width: size?.width, height: size?.height)
+                                .clipped()
+                                .cornerRadius(cornerRadius)
+                        }
                     }
                 )
         } else {
             placeholder
                 .resizable()
-                .scaledToFit()
+                .scaledTo(contentMode)
                 .frame(width: size?.width, height: size?.height)
                 .clipped()
                 .cornerRadius(cornerRadius)
         }
     }
 }
-
