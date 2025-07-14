@@ -20,7 +20,7 @@ open class YeeSystem: NSObject {
     
     //MARK: --- 拨打电话
     ///拨打电话
-    public class func openPhone(_ phone: String,
+    @MainActor public class func openPhone(_ phone: String,
                             _ completion: ((Bool) -> Void)? = nil) {
         if let url = URL(string: "tel://" + phone),UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:], completionHandler: completion)
@@ -29,7 +29,7 @@ open class YeeSystem: NSObject {
     
     //MARK: --- 打开设置
     ///打开设置
-    public class func openSettings(_ completion: ((Bool) -> Void)? = nil) {
+    @MainActor public class func openSettings(_ completion: ((Bool) -> Void)? = nil) {
         if let openURL = URL(string: UIApplication.openSettingsURLString) {
             if  UIApplication.shared.canOpenURL(openURL) {
                 if #available(iOS 10, *) {
@@ -42,7 +42,7 @@ open class YeeSystem: NSObject {
     }
     // MARK: - 跳转系统设置界面
     ///跳转系统设置界面
-    public func openPermissionsSetting() {
+    @MainActor public func openPermissionsSetting() {
         let alertController = UIAlertController(title: "访问受限",
                                                 message: "点击“设置”，允许访问权限",
                                                 preferredStyle: .alert)
@@ -90,7 +90,7 @@ open class YeeSystem: NSObject {
         }
     }
     /// 打开相机相册
-    public func openAlbumService(_ completion: ((UIImage)->())? = nil) {
+    @MainActor public func openAlbumService(_ completion: ((UIImage)->())? = nil) {
         let alertController = UIAlertController(title: "",
                                                 message: "",
                                                 preferredStyle: .alert)
@@ -106,7 +106,7 @@ open class YeeSystem: NSObject {
         UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
     }
     ///打开相册
-    public func openSystemPhoto(_ completion: ((UIImage)->())? = nil) -> Void {
+    @MainActor public func openSystemPhoto(_ completion: ((UIImage)->())? = nil) -> Void {
         let imagePickerController = UIImagePickerController()
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.delegate = self
@@ -120,7 +120,7 @@ open class YeeSystem: NSObject {
         self.photoBlock = completion
     }
     ///打开相机
-    public func openSystemCamera(_ completion: ((UIImage)->())? = nil) -> Void {
+    @MainActor public func openSystemCamera(_ completion: ((UIImage)->())? = nil) -> Void {
         let imagePickerController = UIImagePickerController()
         imagePickerController.sourceType = .camera
         imagePickerController.delegate = self

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'YeeKit'
-  s.version          = '1.0.10'
+  s.version          = '1.0.11'
   s.summary          = 'A lightweight SwiftUI extension kit for data/state/view handling.'
   s.description      = <<-DESC
       YeeKit is a modular and elegant SwiftUI utility library focused on data handling
