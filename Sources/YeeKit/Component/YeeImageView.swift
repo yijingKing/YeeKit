@@ -56,6 +56,66 @@ public struct YeeImageView: View {
         )
     }
 
+    /// 链式设置图片 URL
+    public func url(_ url: URL?) -> YeeImageView {
+        YeeImageView(
+            url: url,
+            placeholder: self.placeholder,
+            failureImage: self.failureImage,
+            size: self.size,
+            cornerRadius: self.cornerRadius,
+            compressMaxKB: self.compressMaxKB
+        )
+    }
+
+    /// 链式设置占位图
+    public func placeholder(_ placeholder: Image) -> YeeImageView {
+        YeeImageView(
+            url: self.url,
+            placeholder: placeholder,
+            failureImage: self.failureImage,
+            size: self.size,
+            cornerRadius: self.cornerRadius,
+            compressMaxKB: self.compressMaxKB
+        )
+    }
+
+    /// 链式设置加载失败显示的图片
+    public func failureImage(_ failureImage: UIImage?) -> YeeImageView {
+        YeeImageView(
+            url: self.url,
+            placeholder: self.placeholder,
+            failureImage: failureImage,
+            size: self.size,
+            cornerRadius: self.cornerRadius,
+            compressMaxKB: self.compressMaxKB
+        )
+    }
+
+    /// 链式设置图片尺寸
+    public func size(_ size: CGSize?) -> YeeImageView {
+        YeeImageView(
+            url: self.url,
+            placeholder: self.placeholder,
+            failureImage: self.failureImage,
+            size: size,
+            cornerRadius: self.cornerRadius,
+            compressMaxKB: self.compressMaxKB
+        )
+    }
+
+    /// 链式设置圆角
+    public func cornerRadius(_ cornerRadius: CGFloat) -> YeeImageView {
+        YeeImageView(
+            url: self.url,
+            placeholder: self.placeholder,
+            failureImage: self.failureImage,
+            size: self.size,
+            cornerRadius: cornerRadius,
+            compressMaxKB: self.compressMaxKB
+        )
+    }
+
     public var body: some View {
         if let url = url {
             KFImage(source: Source.network(url))
@@ -81,12 +141,14 @@ public struct YeeImageView: View {
                 .clipped()
                 .cornerRadius(cornerRadius)
                 .background(
-                    Group {
+                    VStack {
                         if let image = image {
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        }
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: size?.width, height: size?.height)
+                                        .clipped()
+                                }
                     }
                 )
         } else {

@@ -20,10 +20,19 @@ open class YeeSystem: NSObject {
     
     //MARK: --- 拨打电话
     ///拨打电话
-    @MainActor public class func openPhone(_ phone: String,
-                            _ completion: ((Bool) -> Void)? = nil) {
-        if let url = URL(string: "tel://" + phone),UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: completion)
+    @MainActor
+    public class func openPhone(_ phone: String,
+                                _ completion: ((Bool) -> Void)? = nil) {
+        guard let url = URL(string: "tel://" + phone),
+              UIApplication.shared.canOpenURL(url) else { return }
+
+        UIApplication.shared.open(url, options: [:]) { success in
+            // 确保回到主线程执行
+            if let completion = completion {
+                DispatchQueue.main.async {
+                    completion(success)
+                }
+            }
         }
     }
     
@@ -61,7 +70,10 @@ open class YeeSystem: NSObject {
         })
         alertController.addAction(cancelAction)
         alertController.addAction(settingsAction)
-        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController {
+            rootVC.present(alertController, animated: true, completion: nil)
+        }
     }
     // MARK: - 检测是否开启相册
     /// 检测是否开启相册
@@ -103,7 +115,10 @@ open class YeeSystem: NSObject {
         })
         alertController.addAction(cancelAction)
         alertController.addAction(settingsAction)
-        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController {
+            rootVC.present(alertController, animated: true, completion: nil)
+        }
     }
     ///打开相册
     @MainActor public func openSystemPhoto(_ completion: ((UIImage)->())? = nil) -> Void {
@@ -116,7 +131,10 @@ open class YeeSystem: NSObject {
         if #available(iOS 11.0, *) {
             UIScrollView.appearance().contentInsetAdjustmentBehavior = .automatic
         }
-        UIApplication.shared.keyWindow?.rootViewController?.present(imagePickerController, animated: true, completion: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController {
+            rootVC.present(imagePickerController, animated: true, completion: nil)
+        }
         self.photoBlock = completion
     }
     ///打开相机
@@ -131,7 +149,10 @@ open class YeeSystem: NSObject {
         if #available(iOS 11.0, *) {
             UIScrollView.appearance().contentInsetAdjustmentBehavior = .automatic
         }
-        UIApplication.shared.keyWindow?.rootViewController?.present(imagePickerController, animated: true, completion: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController {
+            rootVC.present(imagePickerController, animated: true, completion: nil)
+        }
         self.photoBlock = completion
     }
 }
@@ -151,13 +172,10 @@ extension YeeSystem: UIImagePickerControllerDelegate , UINavigationControllerDel
         if picker.sourceType == .camera {
             UIImageWriteToSavedPhotosAlbum(orignalImg, self, nil, nil)
         }
+        let resultImage = editedImg ?? orignalImg
         picker.dismiss(animated: true) {
-            if let block = self.photoBlock {
-                if let img = editedImg {
-                    block(img)
-                } else {
-                    block(orignalImg)
-                }
+            DispatchQueue.main.async {
+                self.photoBlock?(resultImage)
             }
         }
     }
