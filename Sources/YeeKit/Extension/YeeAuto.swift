@@ -9,15 +9,6 @@ GitHub:        https://github.com/yijingKing
 import Foundation
 import UIKit
 
-@objcMembers
-@MainActor
-public class YeeAutoBridge: NSObject {
-    /// OC 中调用此方法，设置默认 auto 计算策略
-    public class func setDefaultConversion() {
-        YeeAuto.setDefaultConversion()
-    }
-}
-
 actor YeeAutoStorage {
     private var conversionClosure: (Double) async -> Double = { $0 }
 
