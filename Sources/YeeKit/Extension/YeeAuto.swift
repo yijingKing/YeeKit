@@ -9,7 +9,16 @@ GitHub:        https://github.com/yijingKing
 import Foundation
 import UIKit
 
-actor YEXAutoStorage {
+@objcMembers
+@MainActor
+public class YeeAutoBridge: NSObject {
+    /// OC 中调用此方法，设置默认 auto 计算策略
+    public class func setDefaultConversion() {
+        YeeAuto.setDefaultConversion()
+    }
+}
+
+actor YeeAutoStorage {
     private var conversionClosure: (Double) async -> Double = { $0 }
 
     func set(_ closure: @escaping @Sendable (Double) async -> Double) {
@@ -21,16 +30,16 @@ actor YEXAutoStorage {
     }
 }
 
-public struct YEXAuto {
+public struct YeeAuto {
     
     // 在AppDelegate
-    // YEXAuto.set { (value) -> Double in
+    // YeeAuto.set { (value) -> Double in
     // .... calculation ..
     // return value
     // }
     /// 设置转换闭包
     /// - Parameter conversion: 转换闭包
-    static let storage = YEXAutoStorage()
+    static let storage = YeeAutoStorage()
     
     static func set(conversion: @escaping @Sendable (Double) async -> Double) {
         Task {
@@ -55,7 +64,7 @@ public struct YEXAuto {
     }
 }
 
-extension YEXAuto {
+extension YeeAuto {
     
     public static func conversion(_ value: Double) -> Double {
         var result = value
@@ -72,7 +81,7 @@ extension YEXAuto {
 extension Double {
 
     public var auto: Double {
-        return YEXAuto.conversion(self)
+        return YeeAuto.conversion(self)
     }
 }
 
