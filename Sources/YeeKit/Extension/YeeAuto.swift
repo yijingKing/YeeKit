@@ -32,13 +32,13 @@ public struct YeeAuto {
     /// - Parameter conversion: 转换闭包
     static let storage = YeeAutoStorage()
     
-    static func set(conversion: @escaping @Sendable (Double) async -> Double) {
+    public static func set(conversion: @escaping @Sendable (Double) async -> Double) {
         Task {
             await storage.set(conversion)
         }
     }
     
-    static func setDefaultConversion() {
+    public static func setDefaultConversion() {
         Task { @MainActor in
             let base = 375.0
             let screenWidth = Double(UIScreen.main.bounds.width)
