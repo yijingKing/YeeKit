@@ -197,7 +197,7 @@ public extension YeeHUDState {
 
 // MARK: - YeeHUD 静态调用类
 @MainActor
-public enum YeeHUD {
+public enum YeeToast {
     public static func showLoading(_ message: String? = nil,
                                    allowUserInteraction: Bool = false,
                                    duration: Double? = nil,
