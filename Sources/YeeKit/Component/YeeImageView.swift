@@ -10,6 +10,11 @@ import Foundation
 import SwiftUI
 import Kingfisher
 
+
+#Preview {
+    YeeImageView(url: URL(string: "https://ad.zleniao.com/app/upload/2025-07-21/1753088578201.png"), placeholder: nil, failureImage: nil, size: CGSizeMake(.infinity, 600), cornerRadius: 20, compressMaxKB: 0)
+}
+
 public struct YeeImageView: View {
     private let url: URL?
     private let placeholder: Image?
@@ -17,7 +22,7 @@ public struct YeeImageView: View {
     private let size: CGSize?
     private let cornerRadius: CGFloat
     private let compressMaxKB: Int?
-    private let contentMode: SwiftUI.ContentMode
+    private let contentMode: SwiftUI.ContentMode?
     
     @State private var image: Image? = nil
 
@@ -32,12 +37,12 @@ public struct YeeImageView: View {
     ///   - contentMode: 图片内容模式，默认 .fill
     public init(
         url: URL?,
-        placeholder: Image?,
-        failureImage: UIImage? = UIImage(systemName: "xmark.octagon"),
+        placeholder: Image? = nil,
+        failureImage: UIImage? = nil,
         size: CGSize? = nil,
         cornerRadius: CGFloat = 0,
         compressMaxKB: Int? = nil,
-        contentMode: SwiftUI.ContentMode = .fill
+        contentMode: SwiftUI.ContentMode? = nil
     ) {
         self.url = url
         self.placeholder = placeholder

@@ -74,7 +74,10 @@ public extension View {
 
 
 public extension View {
-    func scaledTo(_ contentMode: SwiftUI.ContentMode) -> some View {
+    func scaledTo(_ contentMode: SwiftUI.ContentMode?) -> some View {
+        guard let contentMode = contentMode else {
+            return AnyView(self)
+        }
         switch contentMode {
         case .fill:
             return AnyView(self.scaledToFill())
