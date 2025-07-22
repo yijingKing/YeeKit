@@ -201,6 +201,9 @@ private struct GlobalToastTextView: View {
                         .cornerRadius(8)
                         .transition(.opacity)
                 }
+                .onDisappear {
+                    toast.text = nil
+                }
             }
         }
     }
@@ -228,6 +231,9 @@ private struct GlobalToastLoadingView: View {
                     .background(config.backgroundColor)
                     .cornerRadius(10)
                     .transition(.opacity)
+                }
+                .onDisappear {
+                    toast.isLoading = false
                 }
             }
         }
