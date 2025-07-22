@@ -10,6 +10,7 @@ GitHub:        https://github.com/yijingKing
 import Foundation
 import Combine
 import SwiftUI
+import ToastUI
 
 public extension View {
     /// 适配iOS 14的onChange修饰符
@@ -87,8 +88,6 @@ public extension View {
         }
     }
 }
-
-import ToastUI
 
 public extension View {
     func toastText(_ message: String, isPresented: Binding<Bool>, dismissAfter: Double = 1.2) -> some View {
