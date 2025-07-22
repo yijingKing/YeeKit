@@ -132,10 +132,10 @@ private struct ToastTextView: View {
         var body: some View {
             VStack(spacing: 20) {
                 Button("显示文本 Toast") {
-                    YeeToastManager.shared.show(text: "这是全局 Toast")
+                    YeeToastManager.show(text: "这是全局 Toast")
                 }
                 Button("显示加载中 Toast") {
-                    YeeToastManager.shared.showLoading()
+                    YeeToastManager.showLoading()
                 }
                 .padding(.top,100)
             }
@@ -150,33 +150,33 @@ private struct ToastTextView: View {
 
 
 public class YeeToastManager: ObservableObject {
-    @MainActor static let shared = YeeToastManager()
+     @MainActor static let shared = YeeToastManager()
     
     @Published var text: String?
     @Published var isLoading = false
 
     private init() {}
-
+    
     @MainActor
-    func show(text: String, duration: Double? = nil) {
-        self.text = text
+    public static func show(text: String, duration: Double? = nil) {
+        shared.text = text
         hideLoading()
         DispatchQueue.main.asyncAfter(deadline: .now() + (duration ?? YeeToastConfig.default.duration)) {
-            self.text = nil
+            shared.text = nil
         }
     }
 
     /// 显示加载中
     @MainActor
-    func showLoading() {
-        self.text = nil
-        isLoading = true
+    public static func showLoading() {
+        shared.text = nil
+        shared.isLoading = true
     }
 
     @MainActor
-    func hideLoading() {
-        self.text = nil
-        isLoading = false
+    public static func hideLoading() {
+        shared.text = nil
+        shared.isLoading = false
     }
 }
 
