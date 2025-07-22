@@ -23,7 +23,7 @@ public struct YeeImageView: View {
     private let cornerRadius: CGFloat
     private let compressMaxKB: Int?
     private let contentMode: SwiftUI.ContentMode?
-    
+    @State private var isShowingToast = false
     @State private var image: Image? = nil
 
     /// 初始化方法
@@ -174,6 +174,12 @@ public struct YeeImageView: View {
                     .resizable()
                     .scaledTo(contentMode)
             }
+            VStack {
+                        Button("显示 Toast") {
+                            isShowingToast = true
+                        }
+                    }
+                    
         }
         .frame(width: size?.width, height: size?.height)
         .clipped()

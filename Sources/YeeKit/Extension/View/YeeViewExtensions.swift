@@ -72,7 +72,6 @@ public extension View {
     }
 }
 
-
 public extension View {
     func scaledTo(_ contentMode: SwiftUI.ContentMode?) -> some View {
         guard let contentMode = contentMode else {
@@ -87,4 +86,57 @@ public extension View {
             return AnyView(self.scaledToFill())
         }
     }
+}
+
+import ToastUI
+
+public extension View {
+    func toastText(_ message: String, isPresented: Binding<Bool>, dismissAfter: Double = 1.2) -> some View {
+        self.toast(isPresented: isPresented, dismissAfter: dismissAfter) {
+            Text(message)
+                .font(.system(size: 16))
+                .padding(30)
+                .background(Color.black.opacity(0.9))
+                .foregroundColor(.white)
+                .cornerRadius(8)
+        }
+        .toastDimmedBackground(false)
+    }
+    
+    func toastLoading( isPresented: Binding<Bool>, dismissAfter: Double? = nil) -> some View {
+        self.toast(isPresented: isPresented, dismissAfter: dismissAfter) {
+            HStack(spacing: 10) {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+            }
+            .padding(30)
+            .background(Color.black.opacity(0.8))
+            .cornerRadius(10)
+        }
+        .toastDimmedBackground(false)
+    }
+}
+
+#Preview {
+    struct ToastPreview: View {
+        @State private var isShowingTextToast = false
+        @State private var isShowingLoadingToast = false
+
+        var body: some View {
+            VStack(spacing: 20) {
+                Button("显示文本 Toast") {
+                    isShowingTextToast = true
+                }
+                Button("显示加载中 Toast") {
+                    isShowingLoadingToast = true
+                }
+                .padding(.top,100)
+            }
+            .toastText("这是一个提示", isPresented: $isShowingTextToast)
+            .toastLoading(isPresented: $isShowingLoadingToast, dismissAfter: 99999)
+            .padding()
+        }
+    }
+    
+    return ToastPreview()
 }

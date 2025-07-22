@@ -240,7 +240,8 @@ public extension Date {
     ///   - year: 年份
     ///   - month: 月份
     /// - Returns: 返回天数
-    func daysCount(year: Int, month: Int) -> Int {
+    func daysCount(year: Int?, month: Int?) -> Int {
+        guard let year, let month else { return 0 }
         switch month {
         case 1, 3, 5, 7, 8, 10, 12:
             return 31
@@ -494,20 +495,6 @@ public extension Date {
         return Calendar.current.component(.era, from: self)
     }
 
-    // MARK: - -- 年
-
-    ///  年
-    var year: Int {
-        return Calendar.current.component(.year, from: self)
-    }
-
-    // MARK: - -- 月
-
-    ///  月
-    var month: Int {
-        return Calendar.current.component(.month, from: self)
-    }
-
     // MARK: - -- 工作日
 
     ///  工作日
@@ -526,34 +513,6 @@ public extension Date {
             let dateFormatter = await self.getDateFormatter(for: .dateModeM)
             return dateFormatter.string(from: self)
         }
-    }
-
-    // MARK: - -- 天
-
-    ///  天
-    var day: Int {
-        return Calendar.current.component(.day, from: self)
-    }
-
-    // MARK: - -- 时
-
-    ///  时
-    var hour: Int {
-        return Calendar.current.component(.hour, from: self)
-    }
-
-    // MARK: - -- 分钟
-
-    ///  分钟
-    var minute: Int {
-        return Calendar.current.component(.minute, from: self)
-    }
-
-    // MARK: - -- 秒
-
-    ///  秒
-    var second: Int {
-        return Calendar.current.component(.second, from: self)
     }
 
     // MARK: - -- 纳秒
