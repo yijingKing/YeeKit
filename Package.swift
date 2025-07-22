@@ -12,14 +12,12 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/onevcat/Kingfisher.git", from: "8.4.0"),
-        .package(url: "https://github.com/quanshousio/ToastUI.git", from: "4.0.0")
     ],
     targets: [
         .target(
             name: "YeeKit",
             dependencies: [
                 .product(name: "Kingfisher", package: "Kingfisher"),
-                .product(name: "ToastUI", package: "ToastUI")
             ],
             path: "Sources/YeeKit"
         )

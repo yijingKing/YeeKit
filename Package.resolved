@@ -1,5 +1,5 @@
 {
-  "originHash" : "c54e5795fe4f8f7a00a7b78c49ac8f976c8c0493d177a636bfc519de532206b1",
+  "originHash" : "4ffd113f6a4e2ba96bb8c3e31868807a4a65540f0cc34f0d25d302bf660e514b",
   "pins" : [
     {
       "identity" : "kingfisher",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "ef40458c27ccc65aec62c0cc65da296e07264ffd",
         "version" : "8.4.0"
-      }
-    },
-    {
-      "identity" : "toastui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/quanshousio/ToastUI.git",
-      "state" : {
-        "revision" : "146e2f52c132f681fbf798c8c9f0eb52f021f346",
-        "version" : "4.0.0"
       }
     }
   ],
