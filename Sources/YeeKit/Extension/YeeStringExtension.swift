@@ -47,20 +47,31 @@ public extension String {
         return URL(string: self)
     }
     
-    /// 字符串转Data (UTF-8编码)
+    /// 字符串转Data
     func toData() -> Data? {
         return data(using: .utf8)
     }
-    
+    /// 字符串转Data字符串
     func toDateString(fromFormat: String = "yyyy-MM-dd HH:mm:ss", toFormat: String) -> String? {
-            let formatter = DateFormatter()
-            formatter.dateFormat = fromFormat
-            if let date = formatter.date(from: self) {
-                formatter.dateFormat = toFormat
-                return formatter.string(from: date)
-            }
+        let formatter = DateFormatter()
+        formatter.dateFormat = fromFormat
+        if let date = formatter.date(from: self) {
+            formatter.dateFormat = toFormat
+            return formatter.string(from: date)
+        }
+        return nil
+    }
+    /// 字符串转字典
+    func toDictionary() -> [String: Any]? {
+        guard let data = self.data(using: .utf8) else { return nil }
+        do {
+            let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            return dict
+        } catch {
+            print("字符串转字典失败：\(error)")
             return nil
         }
+    }
 }
 
 public extension String {
