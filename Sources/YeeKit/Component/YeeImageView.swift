@@ -12,7 +12,7 @@ import Kingfisher
 
 public struct YeeImageView: View {
     private let url: URL?
-    private let placeholder: Image
+    private let placeholder: Image?
     private let failureImage: UIImage?
     private let size: CGSize?
     private let cornerRadius: CGFloat
@@ -32,7 +32,7 @@ public struct YeeImageView: View {
     ///   - contentMode: 图片内容模式，默认 .fill
     public init(
         url: URL?,
-        placeholder: Image = Image(systemName: "photo.circle"),
+        placeholder: Image?,
         failureImage: UIImage? = UIImage(systemName: "xmark.octagon"),
         size: CGSize? = nil,
         cornerRadius: CGFloat = 0,
@@ -138,50 +138,41 @@ public struct YeeImageView: View {
             contentMode: contentMode
         )
     }
-
     public var body: some View {
-        if let url = url {
-            KFImage(source: Source.network(url))
-                .cacheMemoryOnly(false)
-                .placeholder {
-                    placeholder
-                        .resizable()
-                        .scaledTo(contentMode)
-                }
-                .onFailureImage(failureImage ?? UIImage())
-                .resizable()
-                .onSuccess { result in
-                    if let compressMaxKB = compressMaxKB,
-                       let data = result.image.jpegData(compressionQuality: 1.0),
-                       let compressedUIImage = UIImage(data: data) {
-                        self.image = Image.yeeCompressed(from: compressedUIImage, maxFileSizeKB: compressMaxKB)
-                    } else {
-                        self.image = Image(uiImage: result.image)
+        Group {
+            if let image = image {
+                image
+                    .resizable()
+                    .scaledTo(contentMode)
+            } else if let url = url {
+                KFImage(source: Source.network(url))
+                    .cacheMemoryOnly(false)
+                    .placeholder {
+                        placeholder?
+                            .resizable()
+                            .scaledTo(contentMode)
                     }
-                }
-                .scaledTo(contentMode)
-                .frame(width: size?.width, height: size?.height)
-                .clipped()
-                .cornerRadius(cornerRadius)
-                .background(
-                    VStack {
-                        if let image = image {
-                            image
-                                .resizable()
-                                .scaledTo(contentMode)
-                                .frame(width: size?.width, height: size?.height)
-                                .clipped()
-                                .cornerRadius(cornerRadius)
+                    .onFailureImage(failureImage ?? UIImage())
+                    .resizable()
+                    .onSuccess { result in
+                        if let compressMaxKB = compressMaxKB,
+                           let data = result.image.jpegData(compressionQuality: 1.0),
+                           let compressedUIImage = UIImage(data: data) {
+                            self.image = Image.yeeCompressed(from: compressedUIImage, maxFileSizeKB: compressMaxKB)
+                        } else {
+                            self.image = Image(uiImage: result.image)
                         }
                     }
-                )
-        } else {
-            placeholder
-                .resizable()
-                .scaledTo(contentMode)
-                .frame(width: size?.width, height: size?.height)
-                .clipped()
-                .cornerRadius(cornerRadius)
+                    .scaledTo(contentMode)
+            } else {
+                placeholder?
+                    .resizable()
+                    .scaledTo(contentMode)
+            }
         }
+        .frame(width: size?.width, height: size?.height)
+        .clipped()
+        .cornerRadius(cornerRadius)
     }
+
 }
