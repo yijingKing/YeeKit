@@ -19,7 +19,7 @@ git push origin $VERSION
 
 # 步骤2：校验 podspec
 echo "🔍 校验 podspec..."
-pod lib lint  --allow-warnings --verbose
+pod lib lint  --allow-warnings --verbose --no-clean
 
 if [ $? -ne 0 ]; then
   echo "❌ podspec 校验失败"
