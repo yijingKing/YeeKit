@@ -124,30 +124,6 @@ private struct ToastTextView: View {
         }
     }
 }
-#Preview {
-    struct ToastPreview: View {
-        @State private var isShowingTextToast = false
-        @State private var isShowingLoadingToast = false
-
-        var body: some View {
-            VStack(spacing: 20) {
-                Button("显示文本 Toast") {
-                    YeeToastManager.show( "这是全局 Toast")
-                }
-                Button("显示加载中 Toast") {
-                    YeeToastManager.showLoading()
-                }
-                .padding(.top,100)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .ignoresSafeArea()
-            .yeeToastSupport()
-            .environmentObject(YeeToastManager.shared)
-        }
-    }
-    return ToastPreview()
-}
-
 
 public class YeeToastManager: ObservableObject {
      @MainActor static let shared = YeeToastManager()
@@ -194,8 +170,8 @@ private struct GlobalToastTextView: View {
                         .onTapGesture {}
                     
                     Text(text)
-                        .font(.system(size: 18))
-                        .padding(30)
+                        .font(.system(size: 17))
+                        .padding(20)
                         .background(config.backgroundColor)
                         .foregroundColor(config.foregroundColor)
                         .cornerRadius(8)
@@ -246,4 +222,30 @@ public extension View {
             .overlay(GlobalToastTextView().environmentObject(YeeToastManager.shared))
             .overlay(GlobalToastLoadingView().environmentObject(YeeToastManager.shared))
     }
+}
+
+
+
+#Preview {
+    struct ToastPreview: View {
+        @State private var isShowingTextToast = false
+        @State private var isShowingLoadingToast = false
+
+        var body: some View {
+            VStack(spacing: 20) {
+                Button("显示文本 Toast") {
+                    YeeToastManager.show( "这是全局 Toast")
+                }
+                Button("显示加载中 Toast") {
+                    YeeToastManager.showLoading()
+                }
+                .padding(.top,100)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea()
+            .yeeToastSupport()
+            .environmentObject(YeeToastManager.shared)
+        }
+    }
+    return ToastPreview()
 }
