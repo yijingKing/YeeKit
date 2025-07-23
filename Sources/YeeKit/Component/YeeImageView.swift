@@ -174,12 +174,6 @@ public struct YeeImageView: View {
                     .resizable()
                     .scaledTo(contentMode)
             }
-            VStack {
-                        Button("显示 Toast") {
-                            isShowingToast = true
-                        }
-                    }
-                    
         }
         .frame(width: size?.width, height: size?.height)
         .clipped()
