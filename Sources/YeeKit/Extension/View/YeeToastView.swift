@@ -203,7 +203,7 @@ private struct GlobalToastLoadingView: View {
                             .progressViewStyle(CircularProgressViewStyle(tint: config.foregroundColor))
                             .scaleEffect(2)
                     }
-                    .padding(50)
+                    .padding(35)
                     .background(config.backgroundColor)
                     .cornerRadius(10)
                     .transition(.opacity)
