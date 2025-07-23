@@ -135,7 +135,7 @@ public class YeeToastManager: ObservableObject {
     private init() {}
     
     @MainActor
-    public static func show(text: String, duration: Double? = nil) {
+    public static func show(_ text: String, duration: Double? = nil) {
         hideLoading()
         shared.text = text
         DispatchQueue.main.asyncAfter(deadline: .now() + (duration ?? YeeToastConfig.default.duration)) {
