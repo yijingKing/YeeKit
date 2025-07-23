@@ -124,6 +124,29 @@ private struct ToastTextView: View {
         }
     }
 }
+#Preview {
+    struct ToastPreview: View {
+        @State private var isShowingTextToast = false
+        @State private var isShowingLoadingToast = false
+
+        var body: some View {
+            VStack(spacing: 20) {
+                Button("显示文本 Toast") {
+                    YeeToastManager.show( "这是全局 Toast")
+                }
+                Button("显示加载中 Toast") {
+                    YeeToastManager.showLoading()
+                }
+                .padding(.top,100)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea()
+            .yeeToastSupport()
+            .environmentObject(YeeToastManager.shared)
+        }
+    }
+    return ToastPreview()
+}
 
 
 public class YeeToastManager: ObservableObject {
@@ -146,7 +169,7 @@ public class YeeToastManager: ObservableObject {
     /// 显示加载中
     @MainActor
     public static func showLoading() {
-        hideLoading()
+        shared.text = nil
         shared.isLoading = true
     }
 
