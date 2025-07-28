@@ -1,0 +1,91 @@
+# --- Xcode ---
+*.xcworkspace
+*.xcuserdata
+*.xcuserstate
+*.moved-aside
+DerivedData/
+build/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# --- User settings ---
+*.swp
+*.swo
+*.DS_Store
+*.orig
+*.tmp
+*.lock
+
+# --- macOS system ---
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# --- iOS Device Logs ---
+*.crash
+*.xcarchive
+
+# --- CocoaPods ---
+Pods/
+Podfile.lock
+*.xcconfig
+
+# --- Carthage ---
+Carthage/
+Carthage/Build/
+
+# --- Fastlane ---
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# --- SwiftPM ---
+.build/
+.swiftpm/
+Package.resolved
+.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+
+
+# --- Certificates and Profiles ---
+*.p12
+*.mobileprovision
+*.cer
+*.crt
+*.pem
+*.key
+
+# --- Keychain or custom secrets ---
+Secrets.plist
+*.env
+*.env.*
+*.secret.*
+*.credentials.*
+
+# --- Firebase / GoogleService ---
+GoogleService-Info.plist
+
+# --- Debug Tools ---
+*.log
+*.trace
+*.profdata
+
+# --- dSYM ---
+*.dSYM.zip
+*.dSYM
+
+# --- Archive ---
+*.ipa
+*.app
+*.xcframework
+*.xcarchive
+
+# --- Temporary Local Scripts ---
+scripts/local/
+*.local.*
+
+# --- Preview Assets ---
+*.preview-thumbnails
