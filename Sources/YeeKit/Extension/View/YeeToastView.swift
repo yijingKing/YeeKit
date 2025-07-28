@@ -244,7 +244,6 @@ public extension View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ignoresSafeArea()
             .yeeToastSupport()
-            .environmentObject(YeeToastManager.shared)
         }
     }
     return ToastPreview()
